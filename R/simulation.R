@@ -23,8 +23,13 @@ simulate <- function(data, day_num, ...) {
            b_alpha_posterior = b_alpha_prior + b_success_num,
            a_beta_posterior = a_beta_prior + a_total_num - a_success_num,
            b_beta_posterior = b_beta_prior + b_total_num - b_success_num) %>%
-    mutate(expected_loss = do.call(compute_expected_loss, .),
+    mutate(expected_gain = do.call(compute_expected_gain, .),
+           expected_loss = do.call(compute_expected_loss, .),
            greater_probability = 1 - exp(do.call(compute_greater_probability, .)))
+}
+
+compute_expected_gain <- function(...) {
+  compute_posterior(expected_gain, expected_gain_approximate, ...)
 }
 
 compute_expected_loss <- function(...) {
