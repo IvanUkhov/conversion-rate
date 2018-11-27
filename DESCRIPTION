@@ -1,0 +1,11 @@
+Package: conversion.rate
+Type: Package
+Title: Conversion rate
+Version: 0.0.1
+Author: Ivan Ukhov and David Robinson
+Maintainer: Ivan Ukhov <ivan.ukhov@gmail.com>
+Description: Tools for studying conversion rates
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: dplyr, purrr, tidyr
