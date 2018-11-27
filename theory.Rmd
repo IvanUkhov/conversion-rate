@@ -31,8 +31,9 @@ better than variant Y, which is what is enforced by the two indicator functions.
 The expected utility is then as follows:
 $$
 \begin{align}
-E(U(X, Y)) &= \int_0^1 \int_0^1 U(x, y) f(x, y) dy dx \\
-           &= \int_0^1 \int_x^1 G(x, y) f(x, y) dy dx + \int_0^1 \int_0^x L(x, y) f(x, y) dy dx.
+E(U(X, Y))
+&= \int_0^1 \int_0^1 U(x, y) f(x, y) dy dx \\
+&= \int_0^1 \int_x^1 G(x, y) f(x, y) dy dx + \int_0^1 \int_0^x L(x, y) f(x, y) dy dx.
 \end{align}
 $$
 
@@ -46,12 +47,16 @@ $$
 In the above, $g$ and $l$ are two positive scaling factors. Then we have that
 $$
 \begin{align}
-E(U(X, Y)) = & g \int_0^1 \int_x^1 y f(x, y) dy dx - g \int_0^1 \int_x^1 x f(x, y) dy dx + {} \\
-             & l \int_0^1 \int_0^x y f(x, y) dy dx - l \int_0^1 \int_0^x x f(x, y) dy dx.
+E(U(X, Y)) =
+& g \int_0^1 \int_x^1 y f(x, y) dy dx - g \int_0^1 \int_x^1 x f(x, y) dy dx + {} \\
+& l \int_0^1 \int_0^x y f(x, y) dy dx - l \int_0^1 \int_0^x x f(x, y) dy dx.
 \end{align}
 $$
-For convenience, denote the four integrals by $R_1$, $R_2$, $L_1$, and $L_2$,
-respectively.
+For convenience, denote the four integrals by $G_1$, $G_2$, $L_1$, and $L_2$,
+respectively, in which case we have that
+$$
+E(U(X, Y)) = g \, G_1 - g \, G_2 + l \, L_1 - l \, L_2.
+$$
 
 Now, assume $X$ has a beta distribution with parameters $\alpha_x$ and
 $\beta_x$; similarly, let $Y$ has a beta distribution with parameters $\alpha_y$
@@ -66,7 +71,7 @@ $$
 We can now compute the expected utility. The first integral is as follows:
 $$
 \begin{align}
-R_1
+G_1
 &=
 \int_0^1 \int_x^1
 \frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
@@ -96,7 +101,7 @@ $$
 $$
 Similarly,
 $$
-R_2 =
+G_2 =
 \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
 h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x).
 $$
@@ -128,7 +133,7 @@ L_2 =
 h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
 $$
 
-The expected utility is as follows:
+Assembling the integrals together, we obtain
 $$
 \begin{align}
 E(U(X, Y)) =
@@ -140,5 +145,38 @@ h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x) + {} \\
 h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y) - {} \\
 & l \, \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
 h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
+\end{align}
+$$
+
+It is worth noting that, in the case of this linear model, we have the following
+relationship between $G$ and $L$:
+$$
+\begin{align}
+G_1 - G_2
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x) -
+\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x) \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+(1 - h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y)) -
+\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+(1 - h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y)) \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)} -
+\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)} -
+(L_1 - L_2) \\
+&=
+\Delta - (L_1 - L_2).
+\end{align}
+$$
+Therefore,
+$$
+\begin{align}
+E(U(X, Y))
+&= g (G_1 - G_2) + l (L_1 - L_2) \\
+&= g (G_1 - G_2) + l (\Delta - (G_1 - G_2)) \\
+&= (g - l) (G_1 - G_2) + l \, \Delta.
 \end{align}
 $$
