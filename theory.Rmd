@@ -1,0 +1,144 @@
+---
+title: 'Bayesian inference of conversion rates'
+output: html_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE
+)
+```
+
+## Introduction
+
+Let us explore a Bayesian approach to statistical inference in the context of
+conversion rates. To begin with, let $X$ and $Y$ be two random variable modeling
+the conversion rates of two variants, variant X and variant Y. Variant X is
+considered to be the baseline. Furthermore, let $f$ be the density function of
+the joint distribution of $X$ and $Y$. In what follows, concrete values assumed
+by the variables are denoted by $x$ and $y$, respectively.
+
+## Expected utility
+
+Define the utility function as
+$$
+U(x, y) = G(x, y) I(x < y) + L(x, y) I(x > y)
+$$
+where $G$ and $L$ are referred to as the gain and loss functions, respectively.
+The gain function takes effect when variant Y has a higher conversion rate than
+the one of variant X, and the loss function takes effect when variant X is
+better than variant Y, which is what is enforced by the two indicator functions.
+The expected utility is then as follows:
+$$
+\begin{align}
+E(U(X, Y)) &= \int_0^1 \int_0^1 U(x, y) f(x, y) dy dx \\
+           &= \int_0^1 \int_x^1 G(x, y) f(x, y) dy dx + \int_0^1 \int_0^x L(x, y) f(x, y) dy dx.
+\end{align}
+$$
+
+Suppose the gain and loss are linear:
+$$
+\begin{align}
+& G(x, y) = g (y - x) \text{ and} \\
+& L(x, y) = l (y - x).
+\end{align}
+$$
+In the above, $g$ and $l$ are two positive scaling factors. Then we have that
+$$
+\begin{align}
+E(U(X, Y)) = & g \int_0^1 \int_x^1 y f(x, y) dy dx - g \int_0^1 \int_x^1 x f(x, y) dy dx + {} \\
+             & l \int_0^1 \int_0^x y f(x, y) dy dx - l \int_0^1 \int_0^x x f(x, y) dy dx.
+\end{align}
+$$
+For convenience, denote the four integrals by $R_1$, $R_2$, $L_1$, and $L_2$,
+respectively.
+
+Now, assume $X$ has a beta distribution with parameters $\alpha_x$ and
+$\beta_x$; similarly, let $Y$ has a beta distribution with parameters $\alpha_y$
+and $\beta_y$. Assume further that, given the parameters, the variables are
+independent. In this case,
+$$
+f(x, y) =
+\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
+\frac{y^{\alpha_y - 1} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}.
+$$
+
+We can now compute the expected utility. The first integral is as follows:
+$$
+\begin{align}
+R_1
+&=
+\int_0^1 \int_x^1
+\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
+\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}
+dy dx \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+\int_0^1 \int_x^1
+\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
+\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y + 1, \beta_y)}
+dy dx \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x)
+\end{align}
+$$
+where
+$$
+h(\alpha_1, \beta_1, \alpha_2, \beta_2) = P(X_1 > X_2)
+$$
+for any
+$$
+\begin{align}
+& X_1 \sim \text{Beta}(\alpha_1, \beta_1) \text{ and} \\
+& X_2 \sim \text{Beta}(\alpha_2, \beta_2).
+\end{align}
+$$
+Similarly,
+$$
+R_2 =
+\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x).
+$$
+
+Regarding the last two integrals in the expression of the utility function,
+$$
+\begin{align}
+L_1
+&=
+\int_0^1 \int_0^x
+\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
+\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}
+dy dx \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+\int_0^1 \int_0^x
+\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
+\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y + 1, \beta_y)}
+dy dx \\
+&=
+\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y).
+\end{align}
+$$
+Similarly,
+$$
+L_2 =
+\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
+$$
+
+The expected utility is as follows:
+$$
+\begin{align}
+E(U(X, Y)) =
+& g \, \frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x) - {} \\
+& g \, \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x) + {} \\
+& l \, \frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
+h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y) - {} \\
+& l \, \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
+h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
+\end{align}
+$$
