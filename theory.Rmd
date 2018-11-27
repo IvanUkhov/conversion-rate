@@ -12,60 +12,60 @@ knitr::opts_chunk$set(
 ## Introduction
 
 Let us explore a Bayesian approach to statistical inference in the context of
-conversion rates. To begin with, let $X$ and $Y$ be two random variable modeling
-the conversion rates of two variants, variant X and variant Y. Variant X is
+conversion rates. To begin with, let $A$ and $B$ be two random variable modeling
+the conversion rates of two variants, variant A and variant Y. Variant A is
 considered to be the baseline. Furthermore, let $f$ be the density function of
-the joint distribution of $X$ and $Y$. In what follows, concrete values assumed
-by the variables are denoted by $x$ and $y$, respectively.
+the joint distribution of $A$ and $B$. In what follows, concrete values assumed
+by the variables are denoted by $a$ and $b$, respectively.
 
 ## Expected utility
 
 Define the utility function as
 $$
-U(x, y) = G(x, y) I(x < y) + L(x, y) I(x > y)
+U(a, b) = G(a, b) I(a < b) + L(a, b) I(a > b)
 $$
 where $G$ and $L$ are referred to as the gain and loss functions, respectively.
-The gain function takes effect when variant Y has a higher conversion rate than
-the one of variant X, and the loss function takes effect when variant X is
-better than variant Y, which is what is enforced by the two indicator functions.
+The gain function takes effect when variant B has a higher conversion rate than
+the one of variant A, and the loss function takes effect when variant A is
+better than variant B, which is what is enforced by the two indicator functions.
 The expected utility is then as follows:
 $$
 \begin{align}
-E(U(X, Y))
-&= \int_0^1 \int_0^1 U(x, y) f(x, y) dy dx \\
-&= \int_0^1 \int_x^1 G(x, y) f(x, y) dy dx + \int_0^1 \int_0^x L(x, y) f(x, y) dy dx.
+E(U(A, B))
+&= \int_0^1 \int_0^1 U(a, b) f(a, b) \, db \, da  \\
+&= \int_0^1 \int_a^1 G(a, b) f(a, b) \, db \, da  + \int_0^1 \int_0^a L(a, b) f(a, b) \, db \, da.
 \end{align}
 $$
 
 Suppose the gain and loss are linear:
 $$
 \begin{align}
-& G(x, y) = g (y - x) \text{ and} \\
-& L(x, y) = l (y - x).
+& G(a, b) = g (b - a) \text{ and} \\
+& L(a, b) = l (b - a).
 \end{align}
 $$
 In the above, $g$ and $l$ are two positive scaling factors. Then we have that
 $$
 \begin{align}
-E(U(X, Y)) =
-& g \int_0^1 \int_x^1 y f(x, y) dy dx - g \int_0^1 \int_x^1 x f(x, y) dy dx + {} \\
-& l \int_0^1 \int_0^x y f(x, y) dy dx - l \int_0^1 \int_0^x x f(x, y) dy dx.
+E(U(A, B)) =
+& g \int_0^1 \int_a^1 b f(a, b) \, db \, da  - g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
+& l \int_0^1 \int_0^a b f(a, b) \, db \, da  - l \int_0^1 \int_0^a a f(a, b) \, db \, da.
 \end{align}
 $$
 For convenience, denote the four integrals by $G_1$, $G_2$, $L_1$, and $L_2$,
 respectively, in which case we have that
 $$
-E(U(X, Y)) = g \, G_1 - g \, G_2 + l \, L_1 - l \, L_2.
+E(U(A, B)) = g \, G_1 - g \, G_2 + l \, L_1 - l \, L_2.
 $$
 
-Now, assume $X$ has a beta distribution with parameters $\alpha_x$ and
-$\beta_x$; similarly, let $Y$ has a beta distribution with parameters $\alpha_y$
-and $\beta_y$. Assume further that, given the parameters, the variables are
+Now, assume $A$ has a beta distribution with parameters $\alpha_a$ and
+$\beta_a$; similarly, let $B$ has a beta distribution with parameters $\alpha_b$
+and $\beta_b$. Assume further that, given the parameters, the variables are
 independent. In this case,
 $$
-f(x, y) =
-\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
-\frac{y^{\alpha_y - 1} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}.
+f(a, b) =
+\frac{a^{\alpha_a - 1} (1 - a)^{\beta_a - 1}}{B(\alpha_a, \beta_a)}
+\frac{b^{\alpha_b - 1} (1 - b)^{\beta_b - 1}}{B(\alpha_b, \beta_b)}.
 $$
 
 We can now compute the expected utility. The first integral is as follows:
@@ -73,19 +73,17 @@ $$
 \begin{align}
 G_1
 &=
-\int_0^1 \int_x^1
-\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
-\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}
-dy dx \\
+\int_0^1 \int_a^1
+\frac{a^{\alpha_a - 1} (1 - a)^{\beta_a - 1}}{B(\alpha_a, \beta_a)}
+\frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b, \beta_b)} \, db \, da  \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-\int_0^1 \int_x^1
-\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
-\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y + 1, \beta_y)}
-dy dx \\
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+\int_0^1 \int_a^1
+\frac{a^{\alpha_a - 1} (1 - a)^{\beta_a - 1}}{B(\alpha_a, \beta_a)}
+\frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b + 1, \beta_b)} \, db \, da \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x)
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a)
 \end{align}
 $$
 where
@@ -102,8 +100,8 @@ $$
 Similarly,
 $$
 G_2 =
-\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x).
+\frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a).
 $$
 
 Regarding the last two integrals in the expression of the utility function,
@@ -111,40 +109,38 @@ $$
 \begin{align}
 L_1
 &=
-\int_0^1 \int_0^x
-\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
-\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y, \beta_y)}
-dy dx \\
+\int_0^1 \int_0^a
+\frac{a^{\alpha_a - 1} (1 - a)^{\beta_a - 1}}{B(\alpha_a, \beta_a)}
+\frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b, \beta_b)} \, db \, da  \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-\int_0^1 \int_0^x
-\frac{x^{\alpha_x - 1} (1 - x)^{\beta_x - 1}}{B(\alpha_x, \beta_x)}
-\frac{y^{\alpha_y} (1 - y)^{\beta_y - 1}}{B(\alpha_y + 1, \beta_y)}
-dy dx \\
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+\int_0^1 \int_0^a
+\frac{a^{\alpha_a - 1} (1 - a)^{\beta_a - 1}}{B(\alpha_a, \beta_a)}
+\frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b + 1, \beta_b)} \, db \, da \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y).
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b).
 \end{align}
 $$
 Similarly,
 $$
 L_2 =
-\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
+\frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b).
 $$
 
 Assembling the integrals together, we obtain
 $$
 \begin{align}
-E(U(X, Y)) =
-& g \, \frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x) - {} \\
-& g \, \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x) + {} \\
-& l \, \frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y) - {} \\
-& l \, \frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y).
+E(U(A, B)) =
+& g \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) - {} \\
+& g \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a) + {} \\
+& l \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b) - {} \\
+& l \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b).
 \end{align}
 $$
 
@@ -154,18 +150,18 @@ $$
 \begin{align}
 G_1 - G_2
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-h(\alpha_y + 1, \beta_y, \alpha_x, \beta_x) -
-\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-h(\alpha_y, \beta_y, \alpha_x + 1, \beta_x) \\
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) -
+\frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a) \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)}
-(1 - h(\alpha_x, \beta_x, \alpha_y + 1, \beta_y)) -
-\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)}
-(1 - h(\alpha_x + 1, \beta_x, \alpha_y, \beta_y)) \\
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+(1 - h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b)) -
+\frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+(1 - h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b)) \\
 &=
-\frac{B(\alpha_y + 1, \beta_y)}{B(\alpha_y, \beta_y)} -
-\frac{B(\alpha_x + 1, \beta_x)}{B(\alpha_x, \beta_x)} -
+\frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)} -
+\frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)} -
 (L_1 - L_2) \\
 &=
 \Delta - (L_1 - L_2).
@@ -174,7 +170,7 @@ $$
 Therefore,
 $$
 \begin{align}
-E(U(X, Y))
+E(U(A, B))
 &= g (G_1 - G_2) + l (L_1 - L_2) \\
 &= g (G_1 - G_2) + l (\Delta - (G_1 - G_2)) \\
 &= (g - l) (G_1 - G_2) + l \, \Delta.
