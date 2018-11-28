@@ -56,6 +56,15 @@ test_that('the greater probability is correct', {
   expect_close(mean(data$greater_probability), 0.4832106)
 })
 
+test_that('the high-density interval is correct', {
+  set.seed(0)
+  data <- create_fixture_2(high_density_interval = TRUE)
+  expect_close(mean(map_dbl(data$a_high_density_interval, ~ .[1])), 0.00109067)
+  expect_close(mean(map_dbl(data$a_high_density_interval, ~ .[2])), 0.002440082)
+  expect_close(mean(map_dbl(data$b_high_density_interval, ~ .[1])), 0.001013332)
+  expect_close(mean(map_dbl(data$b_high_density_interval, ~ .[2])), 0.002327531)
+})
+
 test_that('the approximate expected gain is correct', {
   set.seed(0)
   data <- create_fixture_2(expected_gain = list(approximate = TRUE))

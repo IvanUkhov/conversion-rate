@@ -2,7 +2,8 @@ simulate <- function(data,
                      day_num,
                      expected_gain = FALSE,
                      expected_loss = FALSE,
-                     greater_probability = FALSE, ...) {
+                     greater_probability = FALSE,
+                     high_density_interval = FALSE, ...) {
   data <- data %>%
     cbind(...) %>%
     crossing(day = seq_len(day_num)) %>%
@@ -18,25 +19,39 @@ simulate <- function(data,
     tidyr::gather(key, value, total_num, success_num) %>%
     tidyr::unite(key, group, key, sep = '_') %>%
     tidyr::spread(key, value)
-  if (!isFALSE(expected_gain) || !isFALSE(expected_loss) || !isFALSE(greater_probability)) {
+  if (!isFALSE(expected_gain) ||
+      !isFALSE(expected_loss) ||
+      !isFALSE(greater_probability) ||
+      !isFALSE(high_density_interval)) {
     data <- data %>%
       mutate_posterior()
   }
   if (!isFALSE(expected_gain)) {
     data <- data %>%
       mutate(expected_gain = do.call(compute_expected_gain,
-                                     extract_posterior(data, expected_gain)))
+                                     extract_two_posterior(data, expected_gain)))
   }
   if (!isFALSE(expected_loss)) {
     data <- data %>%
       mutate(expected_loss = do.call(compute_expected_loss,
-                                     extract_posterior(data, expected_loss)))
+                                     extract_two_posterior(data, expected_loss)))
   }
   if (!isFALSE(greater_probability)) {
     data <- data %>%
       mutate(greater_probability = do.call(compute_greater_probability,
-                                           extract_posterior(data, greater_probability)),
+                                           extract_two_posterior(data, greater_probability)),
              greater_probability = 1 - exp(greater_probability))
+  }
+  if (!isFALSE(high_density_interval)) {
+    data <- data %>%
+      mutate(a_high_density_interval = do.call(compute_high_density_interval,
+                                               extract_one_posterior('a',
+                                                                     data,
+                                                                     high_density_interval)),
+             b_high_density_interval = do.call(compute_high_density_interval,
+                                               extract_one_posterior('b',
+                                                                     data,
+                                                                     high_density_interval)))
   }
   data
 }
@@ -53,6 +68,12 @@ compute_greater_probability <- function(...) {
   compute_with_approximation(greater_probability, greater_probability_approximate, ...)
 }
 
+compute_high_density_interval <- function(alpha, beta, ...) {
+  sapply(seq_along(alpha),
+         function(i) high_density_interval(alpha[i], beta[i], ...),
+         simplify = FALSE)
+}
+
 compute_with_approximation <- function(compute,
                                        compute_approximate,
                                        a_alpha,
@@ -61,20 +82,26 @@ compute_with_approximation <- function(compute,
                                        b_beta,
                                        approximate = FALSE) {
   if (!approximate) {
-    sapply(seq_along(a_alpha), function(i) {
-      compute(a_alpha[i], a_beta[i], b_alpha[i], b_beta[i])
-    })
+    sapply(seq_along(a_alpha),
+           function(i) compute(a_alpha[i], a_beta[i], b_alpha[i], b_beta[i]))
   } else {
     compute_approximate(a_alpha, a_beta, b_alpha, b_beta)
   }
 }
 
-extract_posterior <- function(data, arguments) {
-  arguments = if (isTRUE(arguments)) list() else arguments
-  c(list(a_alpha=data$a_alpha_posterior,
-         a_beta=data$a_beta_posterior,
-         b_alpha=data$b_alpha_posterior,
-         b_beta=data$b_beta_posterior),
+extract_one_posterior <- function(group, data, arguments) {
+  arguments <- if (isTRUE(arguments)) list() else arguments
+  alpha <- paste(group, 'alpha_posterior', sep = '_')
+  beta <- paste(group, 'beta_posterior', sep = '_')
+  c(list(alpha = data[[alpha]], beta = data[[beta]]), arguments)
+}
+
+extract_two_posterior <- function(data, arguments) {
+  arguments <- if (isTRUE(arguments)) list() else arguments
+  c(list(a_alpha = data$a_alpha_posterior,
+         a_beta = data$a_beta_posterior,
+         b_alpha = data$b_alpha_posterior,
+         b_beta = data$b_beta_posterior),
     arguments)
 }
 
