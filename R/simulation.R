@@ -37,24 +37,24 @@ simulate <- function(data,
 }
 
 compute_expected_gain <- function(...) {
-  compute_posterior(expected_gain, expected_gain_approximate, ...)
+  compute_with_posterior(expected_gain, expected_gain_approximate, ...)
 }
 
 compute_expected_loss <- function(...) {
-  compute_posterior(expected_loss, expected_loss_approximate, ...)
+  compute_with_posterior(expected_loss, expected_loss_approximate, ...)
 }
 
 compute_greater_probability <- function(...) {
-  compute_posterior(greater_probability, greater_probability_approximate, ...)
+  compute_with_posterior(greater_probability, greater_probability_approximate, ...)
 }
 
-compute_posterior <- function(compute_exact,
-                              compute_approximate,
-                              a_alpha_posterior,
-                              b_alpha_posterior,
-                              a_beta_posterior,
-                              b_beta_posterior,
-                              approximate = FALSE, ...) {
+compute_with_posterior <- function(compute_exact,
+                                   compute_approximate,
+                                   a_alpha_posterior,
+                                   b_alpha_posterior,
+                                   a_beta_posterior,
+                                   b_beta_posterior,
+                                   approximate = FALSE, ...) {
   if (!all(approximate)) {
     sapply(seq_along(a_alpha_posterior), function(i) {
       compute_exact(a_alpha_posterior[i],
