@@ -18,56 +18,64 @@ simulate <- function(data,
     tidyr::gather(key, value, total_num, success_num) %>%
     tidyr::unite(key, group, key, sep = '_') %>%
     tidyr::spread(key, value)
-  if (expected_gain || expected_loss || greater_probability) {
-    data <- mutate_posterior(data)
-  }
-  if (expected_gain) {
+  if (!isFALSE(expected_gain) || !isFALSE(expected_loss) || !isFALSE(greater_probability)) {
     data <- data %>%
-      mutate(expected_gain = do.call(compute_expected_gain, .))
+      mutate_posterior()
   }
-  if (expected_loss) {
+  if (!isFALSE(expected_gain)) {
     data <- data %>%
-      mutate(expected_loss = do.call(compute_expected_loss, .))
+      mutate(expected_gain = do.call(compute_expected_gain,
+                                     extract_posterior(data, expected_gain)))
   }
-  if (greater_probability) {
+  if (!isFALSE(expected_loss)) {
     data <- data %>%
-      mutate(greater_probability = 1 - exp(do.call(compute_greater_probability, .)))
+      mutate(expected_loss = do.call(compute_expected_loss,
+                                     extract_posterior(data, expected_loss)))
+  }
+  if (!isFALSE(greater_probability)) {
+    data <- data %>%
+      mutate(greater_probability = do.call(compute_greater_probability,
+                                           extract_posterior(data, greater_probability)),
+             greater_probability = 1 - exp(greater_probability))
   }
   data
 }
 
 compute_expected_gain <- function(...) {
-  compute_with_posterior(expected_gain, expected_gain_approximate, ...)
+  compute_with_approximation(expected_gain, expected_gain_approximate, ...)
 }
 
 compute_expected_loss <- function(...) {
-  compute_with_posterior(expected_loss, expected_loss_approximate, ...)
+  compute_with_approximation(expected_loss, expected_loss_approximate, ...)
 }
 
 compute_greater_probability <- function(...) {
-  compute_with_posterior(greater_probability, greater_probability_approximate, ...)
+  compute_with_approximation(greater_probability, greater_probability_approximate, ...)
 }
 
-compute_with_posterior <- function(compute_exact,
-                                   compute_approximate,
-                                   a_alpha_posterior,
-                                   b_alpha_posterior,
-                                   a_beta_posterior,
-                                   b_beta_posterior,
-                                   approximate = FALSE, ...) {
-  if (!all(approximate)) {
-    sapply(seq_along(a_alpha_posterior), function(i) {
-      compute_exact(a_alpha_posterior[i],
-                    a_beta_posterior[i],
-                    b_alpha_posterior[i],
-                    b_beta_posterior[i])
+compute_with_approximation <- function(compute,
+                                       compute_approximate,
+                                       a_alpha,
+                                       b_alpha,
+                                       a_beta,
+                                       b_beta,
+                                       approximate = FALSE) {
+  if (!approximate) {
+    sapply(seq_along(a_alpha), function(i) {
+      compute(a_alpha[i], a_beta[i], b_alpha[i], b_beta[i])
     })
   } else {
-    compute_approximate(a_alpha_posterior,
-                        a_beta_posterior,
-                        b_alpha_posterior,
-                        b_beta_posterior)
+    compute_approximate(a_alpha, a_beta, b_alpha, b_beta)
   }
+}
+
+extract_posterior <- function(data, arguments) {
+  arguments = if (isTRUE(arguments)) list() else arguments
+  c(list(a_alpha=data$a_alpha_posterior,
+         a_beta=data$a_beta_posterior,
+         b_alpha=data$b_alpha_posterior,
+         b_beta=data$b_beta_posterior),
+    arguments)
 }
 
 mutate_posterior <- function(data) {

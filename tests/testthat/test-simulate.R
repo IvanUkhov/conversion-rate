@@ -58,18 +58,18 @@ test_that('the greater probability is correct', {
 
 test_that('the approximate expected gain is correct', {
   set.seed(0)
-  data <- create_fixture_2(expected_gain = TRUE, approximate = TRUE)
+  data <- create_fixture_2(expected_gain = list(approximate = TRUE))
   expect_close(sum(data$expected_gain), 0.01281684)
 })
 
 test_that('the approximate expected loss is correct', {
   set.seed(0)
-  data <- create_fixture_2(expected_loss = TRUE, approximate = TRUE)
+  data <- create_fixture_2(expected_loss = list(approximate = TRUE))
   expect_close(sum(data$expected_loss), 0.01946671)
 })
 
 test_that('the approximate greater probability is correct', {
   set.seed(0)
-  data <- create_fixture_2(greater_probability = TRUE, approximate = TRUE)
+  data <- create_fixture_2(greater_probability = list(approximate = TRUE))
   expect_close(mean(data$greater_probability), 0.4034808)
 })
