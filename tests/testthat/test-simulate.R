@@ -40,20 +40,32 @@ test_that('the expected gain is correct', {
   expect_true(abs(sum(data$expected_gain) - 0.1365721) < 1e-6)
 })
 
-test_that('the approximate expected gain is correct', {
-  set.seed(0)
-  data <- create_fixture_2(expected_gain = TRUE, approximate = TRUE)
-  expect_true(abs(sum(data$expected_gain) - 0.01281684) < 1e-6)
-})
-
 test_that('the expected loss is correct', {
   set.seed(0)
   data <- create_fixture_1(expected_loss = TRUE)
   expect_true(abs(sum(data$expected_loss) - 0.1529044) < 1e-6)
 })
 
+test_that('the greater probability is correct', {
+  set.seed(0)
+  data <- create_fixture_1(greater_probability = TRUE)
+  expect_true(abs(mean(data$greater_probability) - 0.4832106) < 1e-6)
+})
+
+test_that('the approximate expected gain is correct', {
+  set.seed(0)
+  data <- create_fixture_2(expected_gain = TRUE, approximate = TRUE)
+  expect_true(abs(sum(data$expected_gain) - 0.01281684) < 1e-6)
+})
+
 test_that('the approximate expected loss is correct', {
   set.seed(0)
   data <- create_fixture_2(expected_loss = TRUE, approximate = TRUE)
   expect_true(abs(sum(data$expected_loss) - 0.01946671) < 1e-6)
+})
+
+test_that('the approximate greater probability is correct', {
+  set.seed(0)
+  data <- create_fixture_2(greater_probability = TRUE, approximate = TRUE)
+  expect_true(abs(mean(data$greater_probability) - 0.4034808) < 1e-6)
 })
