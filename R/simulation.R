@@ -1,4 +1,8 @@
-simulate <- function(data, day_num, ...) {
+simulate <- function(data,
+                     day_num,
+                     expected_gain = FALSE,
+                     expected_loss = FALSE,
+                     greater_probability = FALSE, ...) {
   data <- data %>%
     cbind(...) %>%
     crossing(day = seq_len(day_num)) %>%
@@ -14,18 +18,22 @@ simulate <- function(data, day_num, ...) {
     tidyr::gather(key, value, total_num, success_num) %>%
     tidyr::unite(key, group, key, sep = '_') %>%
     tidyr::spread(key, value)
-
-  priors <- list('a_alpha_prior', 'a_beta_prior', 'b_alpha_prior', 'b_beta_prior')
-  if (!all(map_lgl(priors, ~ . %in% names(data)))) return(data)
-
-  data %>%
-    mutate(a_alpha_posterior = a_alpha_prior + a_success_num,
-           b_alpha_posterior = b_alpha_prior + b_success_num,
-           a_beta_posterior = a_beta_prior + a_total_num - a_success_num,
-           b_beta_posterior = b_beta_prior + b_total_num - b_success_num) %>%
-    mutate(expected_gain = do.call(compute_expected_gain, .),
-           expected_loss = do.call(compute_expected_loss, .),
-           greater_probability = 1 - exp(do.call(compute_greater_probability, .)))
+  if (expected_gain || expected_loss || greater_probability) {
+    data <- mutate_posterior(data)
+  }
+  if (expected_gain) {
+    data <- data %>%
+      mutate(expected_gain = do.call(compute_expected_gain, .))
+  }
+  if (expected_loss) {
+    data <- data %>%
+      mutate(expected_loss = do.call(compute_expected_loss, .))
+  }
+  if (greater_probability) {
+    data <- data %>%
+      mutate(greater_probability = 1 - exp(do.call(compute_greater_probability, .)))
+  }
+  data
 }
 
 compute_expected_gain <- function(...) {
@@ -60,4 +68,12 @@ compute_posterior <- function(compute_exact,
                         b_alpha_posterior,
                         b_beta_posterior)
   }
+}
+
+mutate_posterior <- function(data) {
+  data %>%
+    mutate(a_alpha_posterior = a_alpha_prior + a_success_num,
+           b_alpha_posterior = b_alpha_prior + b_success_num,
+           a_beta_posterior = a_beta_prior + a_total_num - a_success_num,
+           b_beta_posterior = b_beta_prior + b_total_num - b_success_num)
 }

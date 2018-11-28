@@ -10,7 +10,8 @@ test_that('the expected loss is correct', {
              a_alpha_prior = 100,
              b_alpha_prior = 100,
              a_beta_prior = 990,
-             b_beta_prior = 990)
+             b_beta_prior = 990,
+             expected_loss = TRUE)
   expect_equal(nrow(data), 20 * 14)
   expect_true(abs(sum(data$expected_loss) - 0.1529044) < 1e-6)
 })
@@ -26,6 +27,7 @@ test_that('the approximate expected loss is correct', {
              b_alpha_prior = 10,
              a_beta_prior = 90,
              b_beta_prior = 90,
+             expected_loss = TRUE,
              approximate = TRUE)
   expect_equal(nrow(data), 10 * 7)
   expect_true(abs(sum(data$expected_loss) - 0.01946671) < 1e-6)
