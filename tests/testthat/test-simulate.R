@@ -1,5 +1,29 @@
 context('simulate')
 
+create_fixture_1 <- function(...) {
+  tibble(replication = seq_len(20)) %>%
+    simulate(day_num = 14,
+             daily_num = 10000,
+             a_rate = 0.01,
+             b_effect = 0,
+             a_alpha_prior = 100,
+             b_alpha_prior = 100,
+             a_beta_prior = 990,
+             b_beta_prior = 990, ...)
+}
+
+create_fixture_2 <- function(...) {
+  tibble(replication = seq_len(10)) %>%
+    simulate(day_num = 7,
+             daily_num = 10000,
+             a_rate = 0.001,
+             b_effect = -0.0001,
+             a_alpha_prior = 10,
+             b_alpha_prior = 10,
+             a_beta_prior = 90,
+             b_beta_prior = 90, ...)
+}
+
 test_that('the number of rows is correct', {
   set.seed(0)
   data <- tibble(replication = seq_len(42)) %>%
@@ -10,33 +34,26 @@ test_that('the number of rows is correct', {
   expect_equal(nrow(data), 42 * 7)
 })
 
+test_that('the expected gain is correct', {
+  set.seed(0)
+  data <- create_fixture_1(expected_gain = TRUE)
+  expect_true(abs(sum(data$expected_gain) - 0.1365721) < 1e-6)
+})
+
+test_that('the approximate expected gain is correct', {
+  set.seed(0)
+  data <- create_fixture_2(expected_gain = TRUE, approximate = TRUE)
+  expect_true(abs(sum(data$expected_gain) - 0.01281684) < 1e-6)
+})
+
 test_that('the expected loss is correct', {
   set.seed(0)
-  data <- tibble(replication = seq_len(20)) %>%
-    simulate(day_num = 14,
-             daily_num = 10000,
-             a_rate = 0.01,
-             b_effect = 0,
-             a_alpha_prior = 100,
-             b_alpha_prior = 100,
-             a_beta_prior = 990,
-             b_beta_prior = 990,
-             expected_loss = TRUE)
+  data <- create_fixture_1(expected_loss = TRUE)
   expect_true(abs(sum(data$expected_loss) - 0.1529044) < 1e-6)
 })
 
 test_that('the approximate expected loss is correct', {
   set.seed(0)
-  data <- tibble(replication = seq_len(10)) %>%
-    simulate(day_num = 7,
-             daily_num = 10000,
-             a_rate = 0.001,
-             b_effect = -0.0001,
-             a_alpha_prior = 10,
-             b_alpha_prior = 10,
-             a_beta_prior = 90,
-             b_beta_prior = 90,
-             expected_loss = TRUE,
-             approximate = TRUE)
+  data <- create_fixture_2(expected_loss = TRUE, approximate = TRUE)
   expect_true(abs(sum(data$expected_loss) - 0.01946671) < 1e-6)
 })
