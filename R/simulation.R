@@ -2,6 +2,7 @@ simulate <- function(data,
                      day_num,
                      expected_gain = FALSE,
                      expected_loss = FALSE,
+                     expected_rate = FALSE,
                      greater_probability = FALSE,
                      high_density_interval = FALSE, ...) {
   data <- data %>%
@@ -21,6 +22,7 @@ simulate <- function(data,
     tidyr::spread(key, value)
   if (!isFALSE(expected_gain) ||
       !isFALSE(expected_loss) ||
+      !isFALSE(expected_rate) ||
       !isFALSE(greater_probability) ||
       !isFALSE(high_density_interval)) {
     data <- data %>%
@@ -35,6 +37,10 @@ simulate <- function(data,
     data <- data %>%
       mutate(expected_loss = do.call(compute_expected_loss,
                                      extract_two_posterior(data, expected_loss)))
+  }
+  if (!isFALSE(expected_rate)) {
+    data <- data %>%
+      mutate_posterior_mean()
   }
   if (!isFALSE(greater_probability)) {
     data <- data %>%
@@ -111,4 +117,10 @@ mutate_posterior <- function(data) {
            b_alpha_posterior = b_alpha_prior + b_success_num,
            a_beta_posterior = a_beta_prior + a_total_num - a_success_num,
            b_beta_posterior = b_beta_prior + b_total_num - b_success_num)
+}
+
+mutate_posterior_mean <- function(data) {
+  data %>%
+    mutate(a_rate_posterior = a_alpha_posterior / (a_alpha_posterior + a_beta_posterior),
+           b_rate_posterior = b_alpha_posterior / (b_alpha_posterior + b_beta_posterior))
 }
