@@ -1,9 +1,9 @@
 greater_probability <- function(alpha_a, beta_a, alpha_b, beta_b) {
-  j <- seq(0, alpha_b - 1)
+  i <- seq(0, alpha_b - 1)
   series <-
-    lbeta(alpha_a + j, beta_a + beta_b) -
-    log(beta_b + j) -
-    lbeta(1 + j, beta_b) -
+    lbeta(alpha_a + i, beta_a + beta_b) -
+    log(beta_b + i) -
+    lbeta(1 + i, beta_b) -
     lbeta(alpha_a, beta_a)
   log(max(1 - sum(exp(series)), 0))
 }
