@@ -88,8 +88,7 @@ compute_with_approximation <- function(compute,
                                        b_beta,
                                        approximate = FALSE) {
   if (!approximate) {
-    sapply(seq_along(a_alpha),
-           function(i) compute(a_alpha[i], a_beta[i], b_alpha[i], b_beta[i]))
+    compute(a_alpha, a_beta, b_alpha, b_beta)
   } else {
     compute_approximate(a_alpha, a_beta, b_alpha, b_beta)
   }

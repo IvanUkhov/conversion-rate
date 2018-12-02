@@ -8,6 +8,8 @@ greater_probability <- function(alpha_a, beta_a, alpha_b, beta_b) {
   log(max(1 - sum(exp(series)), 0))
 }
 
+greater_probability <- Vectorize(greater_probability)
+
 greater_probability_approximate <- function(alpha_a, beta_a, alpha_b, beta_b) {
   mean_a <- alpha_a / (alpha_a + beta_a)
   mean_b <- alpha_b / (alpha_b + beta_b)
