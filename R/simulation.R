@@ -4,7 +4,7 @@ simulate <- function(data,
                      expected_loss = FALSE,
                      expected_rate = FALSE,
                      greater_probability = FALSE,
-                     high_density_interval = FALSE, ...) {
+                     high_density = FALSE, ...) {
   data <- data %>%
     cbind(...) %>%
     crossing(day = seq_len(day_num)) %>%
@@ -24,7 +24,7 @@ simulate <- function(data,
       !isFALSE(expected_loss) ||
       !isFALSE(expected_rate) ||
       !isFALSE(greater_probability) ||
-      !isFALSE(high_density_interval)) {
+      !isFALSE(high_density)) {
     data <- data %>%
       mutate_posterior()
   }
@@ -48,16 +48,12 @@ simulate <- function(data,
                                            extract_two_posterior(data, greater_probability)),
              greater_probability = 1 - exp(greater_probability))
   }
-  if (!isFALSE(high_density_interval)) {
+  if (!isFALSE(high_density)) {
     data <- data %>%
-      mutate(high_density_interval_a = do.call('high_density_interval',
-                                               extract_one_posterior('a',
-                                                                     data,
-                                                                     high_density_interval)),
-             high_density_interval_b = do.call('high_density_interval',
-                                               extract_one_posterior('b',
-                                                                     data,
-                                                                     high_density_interval)))
+      mutate(high_density_a = do.call('high_density',
+                                      extract_one_posterior('a', data, high_density)),
+             high_density_b = do.call('high_density',
+                                      extract_one_posterior('b', data, high_density)))
   }
   data
 }

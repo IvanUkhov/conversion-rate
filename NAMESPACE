@@ -1,4 +1,4 @@
-export(high_density_interval)
+export(high_density)
 export(simulate)
 import(dplyr)
 import(purrr)

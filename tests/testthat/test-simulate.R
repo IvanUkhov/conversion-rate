@@ -58,11 +58,11 @@ test_that('the greater probability is correct', {
 
 test_that('the high-density interval is correct', {
   set.seed(0)
-  data <- create_fixture_2(high_density_interval = TRUE)
-  expect_close(mean(map_dbl(data$high_density_interval_a, ~ .[1])), 0.00109067)
-  expect_close(mean(map_dbl(data$high_density_interval_a, ~ .[2])), 0.002440082)
-  expect_close(mean(map_dbl(data$high_density_interval_b, ~ .[1])), 0.001013332)
-  expect_close(mean(map_dbl(data$high_density_interval_b, ~ .[2])), 0.002327531)
+  data <- create_fixture_2(high_density = TRUE)
+  expect_close(mean(map_dbl(data$high_density_a, ~ .[1])), 0.00109067)
+  expect_close(mean(map_dbl(data$high_density_a, ~ .[2])), 0.002440082)
+  expect_close(mean(map_dbl(data$high_density_b, ~ .[1])), 0.001013332)
+  expect_close(mean(map_dbl(data$high_density_b, ~ .[2])), 0.002327531)
 })
 
 test_that('the approximate expected gain is correct', {
