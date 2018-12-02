@@ -50,11 +50,11 @@ simulate <- function(data,
   }
   if (!isFALSE(high_density_interval)) {
     data <- data %>%
-      mutate(high_density_interval_a = do.call(compute_high_density_interval,
+      mutate(high_density_interval_a = do.call('high_density_interval',
                                                extract_one_posterior('a',
                                                                      data,
                                                                      high_density_interval)),
-             high_density_interval_b = do.call(compute_high_density_interval,
+             high_density_interval_b = do.call('high_density_interval',
                                                extract_one_posterior('b',
                                                                      data,
                                                                      high_density_interval)))
@@ -72,12 +72,6 @@ compute_expected_loss <- function(approximate = FALSE, ...) {
 
 compute_greater_probability <- function(approximate = FALSE, ...) {
   if (approximate) greater_probability_approximate(...) else greater_probability(...)
-}
-
-compute_high_density_interval <- function(alpha, beta, ...) {
-  sapply(seq_along(alpha),
-         function(i) high_density_interval(alpha[i], beta[i], ...),
-         simplify = FALSE)
 }
 
 extract_one_posterior <- function(group, data, arguments) {

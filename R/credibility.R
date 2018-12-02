@@ -2,6 +2,10 @@ high_density_interval <- function(alpha, beta, ...) {
   high_density_interval_kernel(qbeta, shape1 = alpha, shape2 = beta, ...)
 }
 
+high_density_interval <- Vectorize(high_density_interval,
+                                   vectorize.args = c('alpha', 'beta'),
+                                   SIMPLIFY = FALSE)
+
 high_density_interval_kernel <- function(icdf, probability = 0.95, tolerance = 1e-8, ...) {
   evaluate <- function(left, ...) {
     icdf(left + probability, ...) - icdf(left, ...)
