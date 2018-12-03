@@ -44,7 +44,7 @@ simulate <- function(data,
   }
   if (!isFALSE(greater_probability)) {
     data <- data %>%
-      mutate(greater_probability = do.call(compute_greater_probability,
+      mutate(greater_probability = do.call(compute_log_greater_probability,
                                            extract_two_posterior(data, greater_probability)),
              greater_probability = 1 - exp(greater_probability))
   }
@@ -66,8 +66,8 @@ compute_expected_loss <- function(approximate = FALSE, ...) {
   if (approximate) expected_loss_approximate(...) else expected_loss(...)
 }
 
-compute_greater_probability <- function(approximate = FALSE, ...) {
-  if (approximate) greater_probability_approximate(...) else greater_probability(...)
+compute_log_greater_probability <- function(approximate = FALSE, ...) {
+  if (approximate) log_greater_probability_approximate(...) else log_greater_probability(...)
 }
 
 extract_one_posterior <- function(group, data, arguments) {
