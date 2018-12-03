@@ -19,3 +19,13 @@ test_that('the effect distribution is correct', {
     summarize(error = max(abs(computed - expected))) %>%
     { expect_true(.$error < 1e-5) }
 })
+
+test_that('the inverse of the effect distribution is correct', {
+  compute <- effect_inverse_function(alpha_a = 1, beta_a = 1, alpha_b = 1, beta_b = 1)
+  compute <- Vectorize(compute)
+  tibble(probability = c(0, 0.125, 0.5, 0.875, 1),
+         expected = c(-1, -0.5, 0, 0.5, 1)) %>%
+    mutate(computed = compute(probability)) %>%
+    summarize(error = max(abs(computed - expected))) %>%
+    { expect_true(.$error < 1e-5) }
+})
