@@ -1,6 +1,18 @@
 PROBABILITY <- 0.95
 TOLERANCE <- 1e-8
 
+effect_high_density <- function(alpha_a, beta_a,
+                                alpha_b, beta_b,
+                                probability = PROBABILITY,
+                                tolerance = TOLERANCE, ...) {
+  compute <- effect_inverse_function(alpha_a, beta_a, alpha_b, beta_b, tolerance = tolerance, ...)
+  high_density_kernel(compute, probability = probability, tolerance = tolerance)
+}
+
+effect_high_density <- Vectorize(effect_high_density,
+                                 vectorize.args = c('alpha_a', 'beta_a', 'alpha_b', 'beta_b'),
+                                 SIMPLIFY = FALSE)
+
 high_density <- function(alpha, beta, ...) {
   compute <- function(p) qbeta(p, shape1 = alpha, shape2 = beta)
   high_density_kernel(compute, ...)
