@@ -1,3 +1,11 @@
+log_greater_probability <- function(approximate = FALSE, ...) {
+  if (approximate) {
+    log_greater_probability_approximate(...)
+  } else {
+    log_greater_probability_accurate(...)
+  }
+}
+
 log_greater_probability_accurate <- function(alpha_a, beta_a, alpha_b, beta_b) {
   i <- seq(0, alpha_b - 1)
   series <-

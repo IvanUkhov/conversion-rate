@@ -30,12 +30,12 @@ simulate <- function(data,
   }
   if (!isFALSE(expected_gain)) {
     data <- data %>%
-      mutate(expected_gain = do.call(compute_expected_gain,
+      mutate(expected_gain = do.call('expected_gain',
                                      extract_two_posterior(data, expected_gain)))
   }
   if (!isFALSE(expected_loss)) {
     data <- data %>%
-      mutate(expected_loss = do.call(compute_expected_loss,
+      mutate(expected_loss = do.call('expected_loss',
                                      extract_two_posterior(data, expected_loss)))
   }
   if (!isFALSE(expected_rate)) {
@@ -44,46 +44,18 @@ simulate <- function(data,
   }
   if (!isFALSE(greater_probability)) {
     data <- data %>%
-      mutate(greater_probability = do.call(compute_log_greater_probability,
+      mutate(greater_probability = do.call('log_greater_probability',
                                            extract_two_posterior(data, greater_probability)),
              greater_probability = exp(greater_probability))
   }
   if (!isFALSE(high_density)) {
     data <- data %>%
-      mutate(high_density_a = do.call(compute_high_density,
+      mutate(high_density_a = do.call('high_density',
                                       extract_one_posterior('a', data, high_density)),
-             high_density_b = do.call(compute_high_density,
+             high_density_b = do.call('high_density',
                                       extract_one_posterior('b', data, high_density)))
   }
   data
-}
-
-compute_expected_gain <- function(approximate = FALSE, ...) {
-  if (approximate) {
-    expected_gain_approximate(...)
-  } else {
-    expected_gain_accurate(...)
-  }
-}
-
-compute_expected_loss <- function(approximate = FALSE, ...) {
-  if (approximate) {
-    expected_loss_approximate(...)
-  } else {
-    expected_loss_accurate(...)
-  }
-}
-
-compute_high_density <- function(approximate = FALSE, ...) {
-  high_density_accurate(...)
-}
-
-compute_log_greater_probability <- function(approximate = FALSE, ...) {
-  if (approximate) {
-    log_greater_probability_approximate(...)
-  } else {
-    log_greater_probability_accurate(...)
-  }
 }
 
 extract_one_posterior <- function(group, data, arguments) {

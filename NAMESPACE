@@ -1,5 +1,5 @@
 export(effect_density_function)
-export(effect_high_density_approximate)
+export(effect_high_density)
 export(high_density)
 export(simulate)
 import(dplyr)
