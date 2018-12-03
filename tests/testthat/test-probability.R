@@ -12,7 +12,7 @@ test <- function(log_compute, epsilon = 1e-10) {
 }
 
 test_that('the greater probability is correct', {
-  test(log_greater_probability)
+  test(log_greater_probability_accurate)
 })
 
 test_that('the approximate greater probability is correct', {

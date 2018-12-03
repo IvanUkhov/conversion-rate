@@ -1,13 +1,13 @@
-expected_gain <- function(...) {
-  expected_gain_kernel(log_greater_probability, ...)
+expected_gain_accurate <- function(...) {
+  expected_gain_kernel(log_greater_probability_accurate, ...)
 }
 
 expected_gain_approximate <- function(...) {
   expected_gain_kernel(log_greater_probability_approximate, ...)
 }
 
-expected_loss <- function(...) {
-  expected_loss_kernel(log_greater_probability, ...)
+expected_loss_accurate <- function(...) {
+  expected_loss_kernel(log_greater_probability_accurate, ...)
 }
 
 expected_loss_approximate <- function(...) {

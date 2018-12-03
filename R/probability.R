@@ -1,4 +1,4 @@
-log_greater_probability <- function(alpha_a, beta_a, alpha_b, beta_b) {
+log_greater_probability_accurate <- function(alpha_a, beta_a, alpha_b, beta_b) {
   i <- seq(0, alpha_b - 1)
   series <-
     lbeta(alpha_a + i, beta_a + beta_b) -
@@ -8,7 +8,7 @@ log_greater_probability <- function(alpha_a, beta_a, alpha_b, beta_b) {
   log(min(sum(exp(series)), 1))
 }
 
-log_greater_probability <- Vectorize(log_greater_probability)
+log_greater_probability_accurate <- Vectorize(log_greater_probability_accurate)
 
 log_greater_probability_approximate <- function(alpha_a, beta_a, alpha_b, beta_b) {
   mean_a <- alpha_a / (alpha_a + beta_a)

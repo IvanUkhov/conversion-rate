@@ -1,13 +1,13 @@
-high_density <- function(alpha, beta, probability = 0.95, tolerance = 1e-8) {
+high_density_accurate <- function(alpha, beta, probability = 0.95, tolerance = 1e-8) {
   inverse <- function(p) qbeta(p, shape1 = alpha, shape2 = beta)
   compute <- function(p) inverse(p + probability) - inverse(p)
   p <- optimize(compute, c(0, 1 - probability), tol = tolerance)$minimum
   c(inverse(p), inverse(p + probability))
 }
 
-high_density <- Vectorize(high_density,
-                          vectorize.args = c('alpha', 'beta'),
-                          SIMPLIFY = FALSE)
+high_density_accurate <- Vectorize(high_density_accurate,
+                                   vectorize.args = c('alpha', 'beta'),
+                                   SIMPLIFY = FALSE)
 
 effect_high_density_approximate <- function(alpha_a, beta_a,
                                             alpha_b, beta_b,

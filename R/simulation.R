@@ -50,24 +50,40 @@ simulate <- function(data,
   }
   if (!isFALSE(high_density)) {
     data <- data %>%
-      mutate(high_density_a = do.call('high_density',
+      mutate(high_density_a = do.call(compute_high_density,
                                       extract_one_posterior('a', data, high_density)),
-             high_density_b = do.call('high_density',
+             high_density_b = do.call(compute_high_density,
                                       extract_one_posterior('b', data, high_density)))
   }
   data
 }
 
 compute_expected_gain <- function(approximate = FALSE, ...) {
-  if (approximate) expected_gain_approximate(...) else expected_gain(...)
+  if (approximate) {
+    expected_gain_approximate(...)
+  } else {
+    expected_gain_accurate(...)
+  }
 }
 
 compute_expected_loss <- function(approximate = FALSE, ...) {
-  if (approximate) expected_loss_approximate(...) else expected_loss(...)
+  if (approximate) {
+    expected_loss_approximate(...)
+  } else {
+    expected_loss_accurate(...)
+  }
+}
+
+compute_high_density <- function(approximate = FALSE, ...) {
+  high_density_accurate(...)
 }
 
 compute_log_greater_probability <- function(approximate = FALSE, ...) {
-  if (approximate) log_greater_probability_approximate(...) else log_greater_probability(...)
+  if (approximate) {
+    log_greater_probability_approximate(...)
+  } else {
+    log_greater_probability_accurate(...)
+  }
 }
 
 extract_one_posterior <- function(group, data, arguments) {
