@@ -1,5 +1,6 @@
+export(effect_density_function)
+export(effect_distribution_function)
 export(high_density)
-export(high_density_kernel)
 export(simulate)
 import(dplyr)
 import(purrr)
