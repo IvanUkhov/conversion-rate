@@ -1,8 +1,8 @@
-expected_gain <- function(approximate = FALSE, ...) {
+expected_gain <- function(..., approximate = FALSE) {
   if (approximate) expected_gain_approximate(...) else expected_gain_accurate(...)
 }
 
-expected_loss <- function(approximate = FALSE, ...) {
+expected_loss <- function(..., approximate = FALSE) {
   if (approximate) expected_loss_approximate(...) else expected_loss_accurate(...)
 }
 

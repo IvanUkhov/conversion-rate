@@ -1,4 +1,4 @@
-high_density <- function(approximate = FALSE, ...) {
+high_density <- function(..., approximate = FALSE) {
   high_density_accurate(...)
 }
 
@@ -13,7 +13,7 @@ high_density_accurate <- Vectorize(high_density_accurate,
                                    vectorize.args = c('alpha', 'beta'),
                                    SIMPLIFY = FALSE)
 
-effect_high_density <- function(approximate = TRUE, ...) {
+effect_high_density <- function(..., approximate = TRUE) {
   effect_high_density_approximate(...)
 }
 

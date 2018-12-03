@@ -1,4 +1,4 @@
-log_greater_probability <- function(approximate = FALSE, ...) {
+log_greater_probability <- function(..., approximate = FALSE) {
   if (approximate) {
     log_greater_probability_approximate(...)
   } else {
