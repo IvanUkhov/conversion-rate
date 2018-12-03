@@ -83,12 +83,12 @@ G_1
 \frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b + 1, \beta_b)} \, db \, da \\
 &=
 \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
-h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a)
+h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b)
 \end{align}
 $$
 where
 $$
-h(\alpha_1, \beta_1, \alpha_2, \beta_2) = P(X_1 > X_2)
+h(\alpha_1, \beta_1, \alpha_2, \beta_2) = P(X_1 < X_2)
 $$
 for any
 $$
@@ -101,7 +101,7 @@ Similarly,
 $$
 G_2 =
 \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a).
+h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b).
 $$
 
 Regarding the last two integrals in the expression of the utility function,
@@ -119,14 +119,14 @@ L_1
 \frac{b^{\alpha_b} (1 - b)^{\beta_b - 1}}{B(\alpha_b + 1, \beta_b)} \, db \, da \\
 &=
 \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
-h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b).
+h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a).
 \end{align}
 $$
 Similarly,
 $$
 L_2 =
 \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b).
+h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a).
 $$
 
 Assembling the integrals together, we obtain
@@ -134,13 +134,13 @@ $$
 \begin{align}
 E(U(A, B)) =
 & g \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
-h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) - {} \\
-& g \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a) + {} \\
-& l \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
 h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b) - {} \\
+& g \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b) + {} \\
+& l \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) - {} \\
 & l \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b).
+h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a).
 \end{align}
 $$
 
@@ -151,14 +151,14 @@ $$
 G_1 - G_2
 &=
 \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
-h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) -
+h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b) -
 \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a) \\
+h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b) \\
 &=
 \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
-(1 - h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b)) -
+(1 - h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a)) -
 \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
-(1 - h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b)) \\
+(1 - h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a)) \\
 &=
 \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)} -
 \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)} -
