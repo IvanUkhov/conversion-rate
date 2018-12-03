@@ -14,7 +14,7 @@ high_density_accurate <- Vectorize(high_density_accurate,
                                    SIMPLIFY = FALSE)
 
 effect_high_density <- function(approximate = TRUE, ...) {
-  high_density_approximate(...)
+  effect_high_density_approximate(...)
 }
 
 effect_high_density_approximate <- function(alpha_a, beta_a,
