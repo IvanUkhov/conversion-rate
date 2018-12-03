@@ -46,7 +46,7 @@ simulate <- function(data,
     data <- data %>%
       mutate(greater_probability = do.call(compute_log_greater_probability,
                                            extract_two_posterior(data, greater_probability)),
-             greater_probability = 1 - exp(greater_probability))
+             greater_probability = exp(greater_probability))
   }
   if (!isFALSE(high_density)) {
     data <- data %>%
