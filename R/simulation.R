@@ -7,19 +7,23 @@ simulate <- function(data,
                      high_density = FALSE, ...) {
   data <- data %>%
     cbind(...) %>%
+    mutate(rate_a = if ('rate_a' %in% names(.)) rate_a
+                    else rbeta(n(), alpha_prior_a, beta_prior_a),
+           rate_b = if ('rate_b' %in% names(.)) rate_b
+                    else rbeta(n(), alpha_prior_b, beta_prior_b)) %>%
     crossing(day = seq_len(day_num)) %>%
     crossing(group = c('a', 'b')) %>%
     mutate(group = factor(group),
            total_num = rbinom(n(), daily_num, 0.5),
-           success_num = rbinom(n(), total_num, rate_a + effect_b * (group == 'b'))) %>%
+           success_num = rbinom(n(), total_num, if_else(group == 'a', rate_a, rate_b))) %>%
     group_by_at(vars(-day, -total_num, -success_num)) %>%
     arrange(day) %>%
     mutate(total_num = cumsum(total_num),
            success_num = cumsum(success_num)) %>%
     ungroup() %>%
-    tidyr::gather(key, value, total_num, success_num) %>%
-    tidyr::unite(key, key, group, sep = '_') %>%
-    tidyr::spread(key, value)
+    gather(key, value, total_num, success_num) %>%
+    unite(key, key, group, sep = '_') %>%
+    spread(key, value)
   if (!isFALSE(expected_gain) ||
       !isFALSE(expected_loss) ||
       !isFALSE(expected_rate) ||

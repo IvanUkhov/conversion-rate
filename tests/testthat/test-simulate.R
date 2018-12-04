@@ -5,7 +5,7 @@ create_fixture_1 <- function(...) {
     simulate(day_num = 14,
              daily_num = 10000,
              rate_a = 0.01,
-             effect_b = 0,
+             rate_b = 0.01,
              alpha_prior_a = 100,
              alpha_prior_b = 100,
              beta_prior_a = 990,
@@ -17,7 +17,7 @@ create_fixture_2 <- function(...) {
     simulate(day_num = 7,
              daily_num = 10000,
              rate_a = 0.001,
-             effect_b = -0.0001,
+             rate_b = 0.001 - 0.0001,
              alpha_prior_a = 10,
              alpha_prior_b = 10,
              beta_prior_a = 90,
@@ -34,7 +34,7 @@ test_that('the number of rows is correct', {
     simulate(day_num = 7,
              daily_num = 10,
              rate_a = 0.01,
-             effect_b = 0)
+             rate_b = 0.01)
   expect_equal(nrow(data), 42 * 7)
 })
 
