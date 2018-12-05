@@ -13,11 +13,18 @@ test_that('the effect density is correct', {
 
 test_that('the effect density is correct for narrow distributions', {
   set.seed(0)
-  compute <- effect_density_function(alpha_a = 1200, beta_a = 64873,
-                                     alpha_b = 1065, beta_b = 64829,
-                                     convolution = 3)
-  compute_empirical <- approxfun(density(rbeta(1000000, 1065, 64829) -
-                                         rbeta(1000000, 1200, 64873)))
+  alpha_a = 1200
+  alpha_b = 1065
+  beta_a = 64873
+  beta_b = 64829
+  mean_b <- alpha_b / (alpha_b + beta_b)
+  variance_b <- alpha_b * beta_b / (alpha_b + beta_b)^2 / (alpha_b + beta_b + 1)
+  convolution <- c(mean_b - 3 * sqrt(variance_b), mean_b + 3 * sqrt(variance_b))
+  compute <- effect_density_function(alpha_a = alpha_a, beta_a = beta_a,
+                                     alpha_b = alpha_b, beta_b = beta_b,
+                                     convolution = convolution)
+  compute_empirical <- approxfun(density(rbeta(1000000, alpha_b, beta_b) -
+                                         rbeta(1000000, alpha_a, beta_a)))
   compute <- Vectorize(compute)
   tibble(effect = c(-0.003, -0.002, -0.001)) %>%
     mutate(computed = compute(effect),
