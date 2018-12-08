@@ -42,25 +42,26 @@ $$
 Suppose the gain and loss are linear:
 $$
 \begin{align}
-& G(a, b) = g (b - a) \text{ and} \\
-& L(a, b) = l (b - a).
+& G(a, b) = w_g (b - a) \text{ and} \\
+& L(a, b) = w_l (b - a).
 \end{align}
 $$
-In the above, $g$ and $l$ are two positive scaling factors. Then we have that
+In the above, $w_g$ and $w_l$ are two non-negative scaling factors. Then we have
+that
 $$
 \begin{align}
 E(U(A, B)) =
 &
-g \int_0^1 \int_a^1 b f(a, b) \, db \, da -
-g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
-& l \int_0^1 \int_0^a b f(a, b) \, db \, da -
-l \int_0^1 \int_0^a a f(a, b) \, db \, da.
+w_g \int_0^1 \int_a^1 b f(a, b) \, db \, da -
+w_g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
+& w_l \int_0^1 \int_0^a b f(a, b) \, db \, da -
+w_l \int_0^1 \int_0^a a f(a, b) \, db \, da.
 \end{align}
 $$
 For convenience, denote the four integrals by $G_1$, $G_2$, $L_1$, and $L_2$,
 respectively, in which case we have that
 $$
-E(U(A, B)) = g \, G_1 - g \, G_2 + l \, L_1 - l \, L_2.
+E(U(A, B)) = w_g \, G_1 - w_g \, G_2 + w_l \, L_1 - w_l \, L_2.
 $$
 
 Now, assume $A$ has a beta distribution with parameters $\alpha_a$ and
@@ -138,13 +139,13 @@ Assembling the integrals together, we obtain
 $$
 \begin{align}
 E(U(A, B)) =
-& g \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+& w_g \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
 h(\alpha_a, \beta_a, \alpha_b + 1, \beta_b) - {} \\
-& g \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+& w_g \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
 h(\alpha_a + 1, \beta_a, \alpha_b, \beta_b) + {} \\
-& l \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
+& w_l \, \frac{B(\alpha_b + 1, \beta_b)}{B(\alpha_b, \beta_b)}
 h(\alpha_b + 1, \beta_b, \alpha_a, \beta_a) - {} \\
-& l \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
+& w_l \, \frac{B(\alpha_a + 1, \beta_a)}{B(\alpha_a, \beta_a)}
 h(\alpha_b, \beta_b, \alpha_a + 1, \beta_a).
 \end{align}
 $$
@@ -176,8 +177,8 @@ Therefore,
 $$
 \begin{align}
 E(U(A, B))
-&= g (G_1 - G_2) + l (L_1 - L_2) \\
-&= g (G_1 - G_2) + l (\Delta - (G_1 - G_2)) \\
-&= (g - l) (G_1 - G_2) + l \, \Delta.
+&= w_g (G_1 - G_2) + w_l (L_1 - L_2) \\
+&= w_g (G_1 - G_2) + w_l (\Delta - (G_1 - G_2)) \\
+&= (w_g - w_l) (G_1 - G_2) + w_l \, \Delta.
 \end{align}
 $$
