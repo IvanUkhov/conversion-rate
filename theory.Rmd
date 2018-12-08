@@ -13,10 +13,10 @@ knitr::opts_chunk$set(
 
 Let us explore a Bayesian approach to statistical inference in the context of
 conversion rates. To begin with, let $A$ and $B$ be two random variable modeling
-the conversion rates of two variants, variant A and variant Y. Variant A is
-considered to be the baseline. Furthermore, let $f$ be the density function of
-the joint distribution of $A$ and $B$. In what follows, concrete values assumed
-by the variables are denoted by $a$ and $b$, respectively.
+the conversion rates of two groups, group A and group Y. Group A is considered
+to be the baseline. Furthermore, let $f$ be the density function of the joint
+distribution of $A$ and $B$. In what follows, concrete values assumed by the
+variables are denoted by $a$ and $b$, respectively.
 
 ## Expected utility
 
@@ -25,15 +25,17 @@ $$
 U(a, b) = G(a, b) I(a < b) + L(a, b) I(a > b)
 $$
 where $G$ and $L$ are referred to as the gain and loss functions, respectively.
-The gain function takes effect when variant B has a higher conversion rate than
-the one of variant A, and the loss function takes effect when variant A is
-better than variant B, which is what is enforced by the two indicator functions.
-The expected utility is then as follows:
+The gain function takes effect when group B has a higher conversion rate than
+the one of group A, and the loss function takes effect when group A is better
+than group B, which is what is enforced by the two indicator functions. The
+expected utility is then as follows:
 $$
 \begin{align}
 E(U(A, B))
-&= \int_0^1 \int_0^1 U(a, b) f(a, b) \, db \, da  \\
-&= \int_0^1 \int_a^1 G(a, b) f(a, b) \, db \, da  + \int_0^1 \int_0^a L(a, b) f(a, b) \, db \, da.
+&= \int_0^1 \int_0^1 U(a, b) f(a, b) \, db \, da \\
+&=
+\int_0^1 \int_a^1 G(a, b) f(a, b) \, db \, da +
+\int_0^1 \int_0^a L(a, b) f(a, b) \, db \, da.
 \end{align}
 $$
 
@@ -48,8 +50,11 @@ In the above, $g$ and $l$ are two positive scaling factors. Then we have that
 $$
 \begin{align}
 E(U(A, B)) =
-& g \int_0^1 \int_a^1 b f(a, b) \, db \, da  - g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
-& l \int_0^1 \int_0^a b f(a, b) \, db \, da  - l \int_0^1 \int_0^a a f(a, b) \, db \, da.
+&
+g \int_0^1 \int_a^1 b f(a, b) \, db \, da -
+g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
+& l \int_0^1 \int_0^a b f(a, b) \, db \, da -
+l \int_0^1 \int_0^a a f(a, b) \, db \, da.
 \end{align}
 $$
 For convenience, denote the four integrals by $G_1$, $G_2$, $L_1$, and $L_2$,
