@@ -52,10 +52,11 @@ $$
 \begin{align}
 E(U(A, B)) =
 &
-w_g \int_0^1 \int_a^1 b f(a, b) \, db \, da -
-w_g \int_0^1 \int_a^1 a f(a, b) \, db \, da + {} \\
-& w_l \int_0^1 \int_0^a b f(a, b) \, db \, da -
-w_l \int_0^1 \int_0^a a f(a, b) \, db \, da.
+w_g \int_0^1 \int_a^1 b \, f(a, b) \, db \, da -
+w_g \int_0^1 \int_a^1 a \, f(a, b) \, db \, da + {} \\
+&
+w_l \int_0^1 \int_0^a b \, f(a, b) \, db \, da -
+w_l \int_0^1 \int_0^a a \, f(a, b) \, db \, da.
 \end{align}
 $$
 For convenience, denote the four integrals by $G_1$, $G_2$, $L_1$, and $L_2$,
