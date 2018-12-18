@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 Let us explore a Bayesian approach to statistical inference in the context of
 conversion rates. To begin with, let $A$ and $B$ be two random variable modeling
-the conversion rates of two groups, group A and group Y. Group A is considered
+the conversion rates of two groups, group A and group B. Group A is considered
 to be the baseline. Furthermore, let $f$ be the density function of the joint
 distribution of $A$ and $B$. In what follows, concrete values assumed by the
 variables are denoted by $a$ and $b$, respectively.
