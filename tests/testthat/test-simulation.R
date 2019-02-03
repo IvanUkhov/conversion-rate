@@ -1,4 +1,4 @@
-context('simulate')
+context('simulation')
 
 create_fixture_1 <- function(...) {
   tibble(replication = seq_len(20)) %>%
